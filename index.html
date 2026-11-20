@@ -223,7 +223,9 @@
     align-content: center;
     justify-items: center;
     gap: .35rem;
-    padding: clamp(6.5rem, 17vh, 9rem) 1.25rem 3rem;
+    /* top padding = the garland's own height (it is 0.28 as tall as it is wide) plus breathing room,
+       so the greeting can never slide up underneath the flowers, whatever the window's shape */
+    padding: calc(min(100vw, 560px) * .28 + 2rem) 1.25rem 3rem;
     text-align: center;
   }
   .hero:focus { outline: none; }
@@ -563,22 +565,6 @@
     to   { opacity: 1; transform: none; }
   }
 
-  .reply {
-    display: inline-flex;
-    align-items: center;
-    gap: .6rem;
-    margin-top: 2.4rem;
-    padding: .5rem 1.8rem .75rem;
-    border-radius: 999px;
-    background: var(--full);
-    color: var(--rumman);
-    font-size: clamp(1.3rem, 5.6vw, 1.6rem);
-    font-weight: 700;
-    text-decoration: none;
-    box-shadow: 0 14px 28px -12px rgba(12, 1, 5, .8);
-  }
-  .reply svg { width: 1em; height: 1em; margin-top: .2em; color: #d9486e; }
-
   /* ---------- how long they have been together ---------- */
   .since { padding: 1rem 1.25rem 4.5rem; text-align: center; }
   .since-lead { margin: 0; font-size: clamp(1.6rem, 7vw, 2.4rem); color: var(--ward); }
@@ -707,7 +693,7 @@
       <use href="#full" x="319" y="42.2" width="26" height="26"/>
       <use href="#full" x="365" y="17" width="22" height="22"/>
     </svg>
-    <p class="hero-pre">يا نور، يا روح قلبي</p>
+    <p class="hero-pre">يا نور يا روح قلبي</p>
     <h1 class="hero-title"><span>كل سنة</span> <span>وإنتِ طيبة</span></h1>
     <p class="hero-sub">وكل سنة وإنتِ أجمل حاجة حصلت في حياتي</p>
     <a class="hero-cta" href="#letter">
@@ -896,12 +882,6 @@
         </div>
         <p class="wish-love">بحبك أوي</p>
         <p class="wish-line">يا أجمل حاجة في عمري</p>
-        <!-- Opens WhatsApp with her answer already written. With data-number empty she picks the chat herself;
-             put his number there (country code first, digits only) to open his chat directly. -->
-        <a class="reply step" id="reply" style="--at:18.8s" data-number="" href="https://wa.me/" target="_blank" rel="noopener">
-          <svg aria-hidden="true" focusable="false"><use href="#heart"/></svg>
-          ردّي عليا على واتساب
-        </a>
       </div>
     </section>
   </main>
@@ -1296,7 +1276,7 @@
     }, (parseFloat(window.getComputedStyle(love).animationDelay) || 0) * 1000 + 500);
     // then follow the reveal: whenever the next piece arrives below the screen, bring it into view
     if (!reduced) {
-      const stops = wishAfter.querySelectorAll('.wish-done, .wishes li:nth-child(1), .wishes li:nth-child(4), .wish-words p, .wish-love, .reply');
+      const stops = wishAfter.querySelectorAll('.wish-done, .wishes li:nth-child(1), .wishes li:nth-child(4), .wish-words p, .wish-love');
       Array.prototype.forEach.call(stops, function (stop) {
         const at = parseFloat(window.getComputedStyle(stop).animationDelay) || 0;
         window.setTimeout(function () {
@@ -1307,10 +1287,6 @@
       });
     }
   });
-
-  /* ----- her answer: WhatsApp opens with the words already written ----- */
-  const reply = $('reply');
-  reply.href = 'https://wa.me/' + reply.dataset.number.replace(/\D/g, '') + '?text=' + encodeURIComponent('وأنا كمان بحبك ❤️');
 
   /* ----- how long they have been together, ticking live ----- */
   (function () {
